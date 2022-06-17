@@ -1,0 +1,35 @@
+{
+  "name": "@canterbury-air-patrol/deg-converter",
+  "version": "0.0.1",
+  "description": "Convert Deg Between varying deg/min/sec decimal formats",
+  "main": "deg-conv.js",
+  "scripts": {
+    "check": "eslint *.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/canterbury-air-patrol/deg-converter.git"
+  },
+  "keywords": [
+    "degrees",
+    "dms",
+    "converter"
+  ],
+  "author": "Scott Parlane",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/canterbury-air-patrol/deg-converter/issues"
+  },
+  "homepage": "https://github.com/canterbury-air-patrol/deg-converter#readme",
+  "dependencies": {
+    "eslist": "^1.0.0-beta.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.17.0",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-n": "^15.2.3",
+    "eslint-plugin-promise": "^6.0.0"
+  }
+}
