@@ -22,9 +22,6 @@
     "url": "https://github.com/canterbury-air-patrol/deg-converter/issues"
   },
   "homepage": "https://github.com/canterbury-air-patrol/deg-converter#readme",
-  "dependencies": {
-    "eslist": "^1.0.0-beta.1"
-  },
   "devDependencies": {
     "eslint": "^8.17.0",
     "eslint-config-standard": "^17.0.0",
