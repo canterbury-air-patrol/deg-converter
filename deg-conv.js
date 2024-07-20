@@ -12,17 +12,39 @@ export function degreesToDM (degs, lat) {
   return d + ' ' + mins + ' ' + dir
 }
 
-export function DMToDegrees (DM) {
-  const parts = DM.split(' ')
-  const d = parseInt(parts[0])
-  const mins = parseFloat(parts[1])
-  const dir = parts[2]
-  const dec = mins / 60
-  let degs = d + dec
-  if (dir === 'S' || dir === 'W') {
+export function DMSToDegrees (DMS) {
+  let negative = false
+  if (DMS.includes('N')) {
+    DMS = DMS.replace('N', '')
+  } else if (DMS.includes('S')) {
+    negative = true
+    DMS = DMS.replace('S', '')
+  } else if (DMS.includes('E')) {
+    DMS = DMS.replace('E', '')
+  } else if (DMS.includes('W')) {
+    negative = true
+    DMS = DMS.replace('W', '')
+  }
+  const parts = DMS.split(' ')
+  let fract = 1
+  let p = 0
+  let degs = 0
+  while (p < parts.length) {
+    const value = parseFloat(parts[p])
+    if (!isNaN(value)) {
+      degs = degs + (value / fract)
+      fract = fract * 60
+    }
+    p++
+  }
+  if (negative) {
     degs = degs * -1
   }
   return degs
+}
+
+export function DMToDegrees (DM) {
+  return DMSToDegrees(DM)
 }
 
 export function degreesToDMS (degs, lat) {
@@ -38,18 +60,4 @@ export function degreesToDMS (degs, lat) {
   const secs = ((degs - d - (mins / 60))).toFixed(1)
 
   return d + ' ' + mins + ' ' + secs + ' ' + dir
-}
-
-export function DMSToDegrees (DMS) {
-  const parts = DMS.split(' ')
-  const d = parseInt(parts[0])
-  const mins = parseInt(parts[1])
-  const secs = parseFloat(parts[2])
-  const dir = parts[3]
-  const decmins = secs / 60
-  let degs = d + (mins + decmins) / 60
-  if (dir === 'S' || dir === 'W') {
-    degs = degs * -1
-  }
-  return degs
 }
