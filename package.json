@@ -4,7 +4,7 @@
   "description": "Convert Deg Between varying deg/min/sec decimal formats",
   "main": "deg-conv.js",
   "scripts": {
-    "check": "eslint *.js",
+    "check": "eslint *.js && prettier -c *.js",
     "test": "jest"
   },
   "repository": {
@@ -30,6 +30,7 @@
     "eslint-plugin-react": "^7.37.1",
     "globals": "^15.11.0",
     "jest": "^29.7.0",
-    "jest-cli": "^29.7.0"
+    "jest-cli": "^29.7.0",
+    "prettier": "^3.3.3"
   }
 }

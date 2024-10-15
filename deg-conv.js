@@ -1,4 +1,4 @@
-export function degreesToDM (degs, lat) {
+export function degreesToDM(degs, lat) {
   let dir = ''
   if (degs < 0) {
     degs = degs * -1
@@ -12,7 +12,7 @@ export function degreesToDM (degs, lat) {
   return d + ' ' + mins + ' ' + dir
 }
 
-export function DMSToDegrees (DMS) {
+export function DMSToDegrees(DMS) {
   let negative = false
   if (DMS.includes('N')) {
     DMS = DMS.replace('N', '')
@@ -32,7 +32,7 @@ export function DMSToDegrees (DMS) {
   while (p < parts.length) {
     const value = parseFloat(parts[p])
     if (!isNaN(value)) {
-      degs = degs + (value / fract)
+      degs = degs + value / fract
       fract = fract * 60
     }
     p++
@@ -43,11 +43,11 @@ export function DMSToDegrees (DMS) {
   return degs
 }
 
-export function DMToDegrees (DM) {
+export function DMToDegrees(DM) {
   return DMSToDegrees(DM)
 }
 
-export function degreesToDMS (degs, lat) {
+export function degreesToDMS(degs, lat) {
   let dir = ''
   if (degs < 0) {
     degs = degs * -1
@@ -57,7 +57,7 @@ export function degreesToDMS (degs, lat) {
   }
   const d = Math.floor(degs)
   const mins = ((degs - d) * 60).toFixed(0)
-  const secs = ((degs - d - (mins / 60))).toFixed(1)
+  const secs = (degs - d - mins / 60).toFixed(1)
 
   return d + ' ' + mins + ' ' + secs + ' ' + dir
 }
