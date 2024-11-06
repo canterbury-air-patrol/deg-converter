@@ -1,7 +1,7 @@
 export function degreesToDM(degs: number, lat: boolean): string {
   let dir = ''
   if (degs < 0) {
-    degs = degs * -1
+    degs *= -1
     dir = lat ? 'S' : 'W'
   } else {
     dir = lat ? 'N' : 'E'
@@ -14,31 +14,32 @@ export function degreesToDM(degs: number, lat: boolean): string {
 
 export function DMSToDegrees(DMS: string): number {
   let negative = false
+  let DMS_no_dir = DMS
   if (DMS.includes('N')) {
-    DMS = DMS.replace('N', '')
+    DMS_no_dir = DMS.replace('N', '')
   } else if (DMS.includes('S')) {
     negative = true
-    DMS = DMS.replace('S', '')
+    DMS_no_dir = DMS.replace('S', '')
   } else if (DMS.includes('E')) {
-    DMS = DMS.replace('E', '')
+    DMS_no_dir = DMS.replace('E', '')
   } else if (DMS.includes('W')) {
     negative = true
-    DMS = DMS.replace('W', '')
+    DMS_no_dir = DMS.replace('W', '')
   }
-  const parts = DMS.split(' ')
+  const parts = DMS_no_dir.split(' ')
   let fract = 1
   let p = 0
   let degs = 0
   while (p < parts.length) {
     const value = parseFloat(parts[p])
     if (!isNaN(value)) {
-      degs = degs + value / fract
-      fract = fract * 60
+      degs += value / fract
+      fract *= 60
     }
     p++
   }
   if (negative) {
-    degs = degs * -1
+    degs *= -1
   }
   return degs
 }
@@ -50,7 +51,7 @@ export function DMToDegrees(DM: string): number {
 export function degreesToDMS(degs: number, lat: boolean): string {
   let dir = ''
   if (degs < 0) {
-    degs = degs * -1
+    degs *= -1
     dir = lat ? 'S' : 'W'
   } else {
     dir = lat ? 'N' : 'E'
