@@ -1,4 +1,4 @@
-export function degreesToDM(degs, lat) {
+export function degreesToDM(degs: number, lat: boolean): string {
   let dir = ''
   if (degs < 0) {
     degs = degs * -1
@@ -12,7 +12,7 @@ export function degreesToDM(degs, lat) {
   return d + ' ' + mins + ' ' + dir
 }
 
-export function DMSToDegrees(DMS) {
+export function DMSToDegrees(DMS: string): number {
   let negative = false
   if (DMS.includes('N')) {
     DMS = DMS.replace('N', '')
@@ -43,11 +43,11 @@ export function DMSToDegrees(DMS) {
   return degs
 }
 
-export function DMToDegrees(DM) {
+export function DMToDegrees(DM: string): number {
   return DMSToDegrees(DM)
 }
 
-export function degreesToDMS(degs, lat) {
+export function degreesToDMS(degs: number, lat: boolean): string {
   let dir = ''
   if (degs < 0) {
     degs = degs * -1
@@ -56,7 +56,7 @@ export function degreesToDMS(degs, lat) {
     dir = lat ? 'N' : 'E'
   }
   const d = Math.floor(degs)
-  const mins = ((degs - d) * 60).toFixed(0)
+  const mins: number = Number(((degs - d) * 60).toFixed(0))
   const secs = (degs - d - mins / 60).toFixed(1)
 
   return d + ' ' + mins + ' ' + secs + ' ' + dir
