@@ -23,40 +23,41 @@ export function degreesToDM(degs: number, lat: boolean): string {
   return d + ' ' + mins + ' ' + dir
 }
 
-export function DMSToDegrees(DMS: string): number {
-  const dirMatches = DMS.match(/[NSEW]/g)
+function parseDegreesString(input: string, expectedParts: 2 | 3, label: string): number {
+  const dirMatches = input.match(/[NSEW]/g)
   if (dirMatches && dirMatches.length > 1) {
-    throw new SyntaxError(`DMS string contains multiple direction letters: ${DMS}`)
+    throw new SyntaxError(`${label} string contains multiple direction letters: ${input}`)
   }
-  let negative = false
-  let DMS_no_dir = DMS
   const dir = dirMatches?.[0]
-  if (dir === 'S' || dir === 'W') {
-    negative = true
-  }
-  if (dir) {
-    DMS_no_dir = DMS.replace(dir, '')
-  }
-  const parts = DMS_no_dir.split(' ')
-  let fract = 1
-  let p = 0
-  let degs = 0
-  while (p < parts.length) {
-    const value = parseFloat(parts[p])
-    if (!isNaN(value)) {
-      degs += value / fract
-      fract *= 60
+  const negative = dir === 'S' || dir === 'W'
+  const body = dir ? input.replace(dir, '') : input
+  const numericParts: number[] = []
+  for (const part of body.split(' ')) {
+    if (part === '') continue
+    const value = parseFloat(part)
+    if (isNaN(value)) {
+      throw new SyntaxError(`${label} string contains non-numeric part "${part}": ${input}`)
     }
-    p++
+    numericParts.push(value)
   }
-  if (negative) {
-    degs *= -1
+  if (numericParts.length !== expectedParts) {
+    throw new SyntaxError(`${label} string expects ${expectedParts} numeric parts, got ${numericParts.length}: ${input}`)
   }
-  return degs
+  let fract = 1
+  let degs = 0
+  for (const value of numericParts) {
+    degs += value / fract
+    fract *= 60
+  }
+  return negative ? -degs : degs
+}
+
+export function DMSToDegrees(DMS: string): number {
+  return parseDegreesString(DMS, 3, 'DMS')
 }
 
 export function DMToDegrees(DM: string): number {
-  return DMSToDegrees(DM)
+  return parseDegreesString(DM, 2, 'DM')
 }
 
 export function degreesToDMS(degs: number, lat: boolean): string {

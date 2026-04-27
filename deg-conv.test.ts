@@ -52,6 +52,15 @@ test('W Longitude', () => {
   expect(DMSToDegrees('W172 30 00')).toBe(-172.5)
 })
 
+test('DM/DMS parsers enforce numeric part counts', () => {
+  // DMToDegrees previously aliased DMSToDegrees and accepted any count.
+  expect(() => DMToDegrees('43 30 30 N')).toThrow(SyntaxError)
+  expect(() => DMToDegrees('43 N')).toThrow(SyntaxError)
+  expect(() => DMSToDegrees('43 30 N')).toThrow(SyntaxError)
+  expect(() => DMSToDegrees('43 30 30 30 N')).toThrow(SyntaxError)
+  expect(() => DMSToDegrees('43 abc 30 N')).toThrow(SyntaxError)
+})
+
 test('DMSToDegrees rejects multiple direction letters', () => {
   // Previously: includes()/replace() removed only the first letter,
   // silently accepting "N43 30 N" or "43 30 N S" as 43.5.
