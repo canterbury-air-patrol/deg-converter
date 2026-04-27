@@ -57,8 +57,9 @@ export function degreesToDMS(degs: number, lat: boolean): string {
     dir = lat ? 'N' : 'E'
   }
   const d = Math.floor(degs)
-  const mins: number = Number(((degs - d) * 60).toFixed(0))
-  const secs = (degs - d - mins / 60).toFixed(1)
+  const totalMins = (degs - d) * 60
+  const mins = Math.floor(totalMins)
+  const secs = ((totalMins - mins) * 60).toFixed(1)
 
   return d + ' ' + mins + ' ' + secs + ' ' + dir
 }

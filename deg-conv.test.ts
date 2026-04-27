@@ -52,6 +52,16 @@ test('W Longitude', () => {
   expect(DMSToDegrees('W172 30 00')).toBe(-172.5)
 })
 
+test('degreesToDMS minute boundaries', () => {
+  // Without Math.floor on minutes, 43.999 rounded to "43 60 -0.0 N" (invalid).
+  expect(degreesToDMS(43.999, true)).toBe('43 59 56.4 N')
+  // 43.508333... ≈ 43°30'30" — naive rounding produced "43 31 -0.0 N".
+  expect(degreesToDMS(43.508333, true)).toBe('43 30 30.0 N')
+  expect(degreesToDMS(43.5, true)).toBe('43 30 0.0 N')
+  expect(degreesToDMS(0, false)).toBe('0 0 0.0 E')
+  expect(degreesToDMS(-43.508333, false)).toBe('43 30 30.0 W')
+})
+
 test('Latitude Range', () => {
   expect(DMSToDegrees('000 00 00 E')).toBe(0)
   expect(DMSToDegrees('000 59 00 E')).toBe(59 / 60)
