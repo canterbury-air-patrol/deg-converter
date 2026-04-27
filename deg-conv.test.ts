@@ -1,8 +1,8 @@
 import { DMSToDegrees, DMToDegrees, degreesToDM, degreesToDMS } from './deg-conv'
 
 test('N Latitude', () => {
-  expect(degreesToDM(43.5, true)).toBe('43 30.000 N')
-  expect(degreesToDMS(43.5, true)).toBe('43 30 0.0 N')
+  expect(degreesToDM(43.5, 'lat')).toBe('43 30.000 N')
+  expect(degreesToDMS(43.5, 'lat')).toBe('43 30 0.0 N')
   expect(DMToDegrees('43 30 N')).toBe(43.5)
   expect(DMSToDegrees('43 30 00 N')).toBe(43.5)
   expect(DMToDegrees('N 43 30')).toBe(43.5)
@@ -14,8 +14,8 @@ test('N Latitude', () => {
 })
 
 test('S Latitude', () => {
-  expect(degreesToDM(-43.5, true)).toBe('43 30.000 S')
-  expect(degreesToDMS(-43.5, true)).toBe('43 30 0.0 S')
+  expect(degreesToDM(-43.5, 'lat')).toBe('43 30.000 S')
+  expect(degreesToDMS(-43.5, 'lat')).toBe('43 30 0.0 S')
   expect(DMToDegrees('43 30 S')).toBe(-43.5)
   expect(DMSToDegrees('43 30 00 S')).toBe(-43.5)
   expect(DMToDegrees('S 43 30')).toBe(-43.5)
@@ -27,8 +27,8 @@ test('S Latitude', () => {
 })
 
 test('E Longitude', () => {
-  expect(degreesToDM(172.5, false)).toBe('172 30.000 E')
-  expect(degreesToDMS(172.5, false)).toBe('172 30 0.0 E')
+  expect(degreesToDM(172.5, 'lon')).toBe('172 30.000 E')
+  expect(degreesToDMS(172.5, 'lon')).toBe('172 30 0.0 E')
   expect(DMToDegrees('172 30 E')).toBe(172.5)
   expect(DMSToDegrees('172 30 00 E')).toBe(172.5)
   expect(DMToDegrees('E 172 30')).toBe(172.5)
@@ -40,8 +40,8 @@ test('E Longitude', () => {
 })
 
 test('W Longitude', () => {
-  expect(degreesToDM(-172.5, false)).toBe('172 30.000 W')
-  expect(degreesToDMS(-172.5, false)).toBe('172 30 0.0 W')
+  expect(degreesToDM(-172.5, 'lon')).toBe('172 30.000 W')
+  expect(degreesToDMS(-172.5, 'lon')).toBe('172 30 0.0 W')
   expect(DMToDegrees('172 30 W')).toBe(-172.5)
   expect(DMSToDegrees('172 30 00 W')).toBe(-172.5)
   expect(DMToDegrees('W 172 30')).toBe(-172.5)
@@ -71,31 +71,31 @@ test('DMSToDegrees rejects multiple direction letters', () => {
 })
 
 test('formatters reject out-of-range values', () => {
-  expect(() => degreesToDM(91, true)).toThrow(RangeError)
-  expect(() => degreesToDM(-91, true)).toThrow(RangeError)
-  expect(() => degreesToDMS(91, true)).toThrow(RangeError)
-  expect(() => degreesToDMS(-91, true)).toThrow(RangeError)
-  expect(() => degreesToDM(181, false)).toThrow(RangeError)
-  expect(() => degreesToDM(-181, false)).toThrow(RangeError)
-  expect(() => degreesToDMS(181, false)).toThrow(RangeError)
-  expect(() => degreesToDMS(-181, false)).toThrow(RangeError)
-  expect(() => degreesToDM(NaN, true)).toThrow(RangeError)
-  expect(() => degreesToDM(Infinity, false)).toThrow(RangeError)
+  expect(() => degreesToDM(91, 'lat')).toThrow(RangeError)
+  expect(() => degreesToDM(-91, 'lat')).toThrow(RangeError)
+  expect(() => degreesToDMS(91, 'lat')).toThrow(RangeError)
+  expect(() => degreesToDMS(-91, 'lat')).toThrow(RangeError)
+  expect(() => degreesToDM(181, 'lon')).toThrow(RangeError)
+  expect(() => degreesToDM(-181, 'lon')).toThrow(RangeError)
+  expect(() => degreesToDMS(181, 'lon')).toThrow(RangeError)
+  expect(() => degreesToDMS(-181, 'lon')).toThrow(RangeError)
+  expect(() => degreesToDM(NaN, 'lat')).toThrow(RangeError)
+  expect(() => degreesToDM(Infinity, 'lon')).toThrow(RangeError)
   // Boundaries are inclusive.
-  expect(() => degreesToDM(90, true)).not.toThrow()
-  expect(() => degreesToDM(-90, true)).not.toThrow()
-  expect(() => degreesToDM(180, false)).not.toThrow()
-  expect(() => degreesToDM(-180, false)).not.toThrow()
+  expect(() => degreesToDM(90, 'lat')).not.toThrow()
+  expect(() => degreesToDM(-90, 'lat')).not.toThrow()
+  expect(() => degreesToDM(180, 'lon')).not.toThrow()
+  expect(() => degreesToDM(-180, 'lon')).not.toThrow()
 })
 
 test('degreesToDMS minute boundaries', () => {
   // Without Math.floor on minutes, 43.999 rounded to "43 60 -0.0 N" (invalid).
-  expect(degreesToDMS(43.999, true)).toBe('43 59 56.4 N')
+  expect(degreesToDMS(43.999, 'lat')).toBe('43 59 56.4 N')
   // 43.508333... ≈ 43°30'30" — naive rounding produced "43 31 -0.0 N".
-  expect(degreesToDMS(43.508333, true)).toBe('43 30 30.0 N')
-  expect(degreesToDMS(43.5, true)).toBe('43 30 0.0 N')
-  expect(degreesToDMS(0, false)).toBe('0 0 0.0 E')
-  expect(degreesToDMS(-43.508333, false)).toBe('43 30 30.0 W')
+  expect(degreesToDMS(43.508333, 'lat')).toBe('43 30 30.0 N')
+  expect(degreesToDMS(43.5, 'lat')).toBe('43 30 0.0 N')
+  expect(degreesToDMS(0, 'lon')).toBe('0 0 0.0 E')
+  expect(degreesToDMS(-43.508333, 'lon')).toBe('43 30 30.0 W')
 })
 
 test('Latitude Range', () => {
