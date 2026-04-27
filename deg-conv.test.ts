@@ -52,6 +52,15 @@ test('W Longitude', () => {
   expect(DMSToDegrees('W172 30 00')).toBe(-172.5)
 })
 
+test('DMSToDegrees rejects multiple direction letters', () => {
+  // Previously: includes()/replace() removed only the first letter,
+  // silently accepting "N43 30 N" or "43 30 N S" as 43.5.
+  expect(() => DMSToDegrees('N43 30 N')).toThrow(SyntaxError)
+  expect(() => DMSToDegrees('43 30 N S')).toThrow(SyntaxError)
+  expect(() => DMSToDegrees('S 43 30 W')).toThrow(SyntaxError)
+  expect(() => DMSToDegrees('43 30 EE')).toThrow(SyntaxError)
+})
+
 test('formatters reject out-of-range values', () => {
   expect(() => degreesToDM(91, true)).toThrow(RangeError)
   expect(() => degreesToDM(-91, true)).toThrow(RangeError)
