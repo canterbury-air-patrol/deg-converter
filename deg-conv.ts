@@ -1,21 +1,23 @@
-function assertInRange(degs: number, lat: boolean): void {
+export type Axis = 'lat' | 'lon'
+
+function assertInRange(degs: number, axis: Axis): void {
   if (!Number.isFinite(degs)) {
     throw new RangeError('degrees must be a finite number')
   }
-  const limit = lat ? 90 : 180
+  const limit = axis === 'lat' ? 90 : 180
   if (degs < -limit || degs > limit) {
-    throw new RangeError(`degrees ${degs} out of range for ${lat ? 'latitude (±90)' : 'longitude (±180)'}`)
+    throw new RangeError(`degrees ${degs} out of range for ${axis === 'lat' ? 'latitude (±90)' : 'longitude (±180)'}`)
   }
 }
 
-export function degreesToDM(degs: number, lat: boolean): string {
-  assertInRange(degs, lat)
+export function degreesToDM(degs: number, axis: Axis): string {
+  assertInRange(degs, axis)
   let dir = ''
   if (degs < 0) {
     degs *= -1
-    dir = lat ? 'S' : 'W'
+    dir = axis === 'lat' ? 'S' : 'W'
   } else {
-    dir = lat ? 'N' : 'E'
+    dir = axis === 'lat' ? 'N' : 'E'
   }
   const d = Math.floor(degs)
   const mins = ((degs - d) * 60).toFixed(3)
@@ -60,14 +62,14 @@ export function DMToDegrees(DM: string): number {
   return parseDegreesString(DM, 2, 'DM')
 }
 
-export function degreesToDMS(degs: number, lat: boolean): string {
-  assertInRange(degs, lat)
+export function degreesToDMS(degs: number, axis: Axis): string {
+  assertInRange(degs, axis)
   let dir = ''
   if (degs < 0) {
     degs *= -1
-    dir = lat ? 'S' : 'W'
+    dir = axis === 'lat' ? 'S' : 'W'
   } else {
-    dir = lat ? 'N' : 'E'
+    dir = axis === 'lat' ? 'N' : 'E'
   }
   const d = Math.floor(degs)
   const totalMins = (degs - d) * 60
