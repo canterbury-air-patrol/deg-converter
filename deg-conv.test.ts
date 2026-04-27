@@ -1,8 +1,8 @@
 import { DMSToDegrees, DMToDegrees, degreesToDM, degreesToDMS } from './deg-conv'
 
 test('N Latitude', () => {
-  expect(degreesToDM(43.5, true).slice(-1)).toBe('N')
-  expect(degreesToDMS(43.5, true).slice(-1)).toBe('N')
+  expect(degreesToDM(43.5, true)).toBe('43 30.000 N')
+  expect(degreesToDMS(43.5, true)).toBe('43 30 0.0 N')
   expect(DMToDegrees('43 30 N')).toBe(43.5)
   expect(DMSToDegrees('43 30 00 N')).toBe(43.5)
   expect(DMToDegrees('N 43 30')).toBe(43.5)
@@ -14,8 +14,8 @@ test('N Latitude', () => {
 })
 
 test('S Latitude', () => {
-  expect(degreesToDM(-43.5, true).slice(-1)).toBe('S')
-  expect(degreesToDMS(-43.5, true).slice(-1)).toBe('S')
+  expect(degreesToDM(-43.5, true)).toBe('43 30.000 S')
+  expect(degreesToDMS(-43.5, true)).toBe('43 30 0.0 S')
   expect(DMToDegrees('43 30 S')).toBe(-43.5)
   expect(DMSToDegrees('43 30 00 S')).toBe(-43.5)
   expect(DMToDegrees('S 43 30')).toBe(-43.5)
@@ -27,8 +27,8 @@ test('S Latitude', () => {
 })
 
 test('E Longitude', () => {
-  expect(degreesToDM(172.5, false).slice(-1)).toBe('E')
-  expect(degreesToDMS(172.5, false).slice(-1)).toBe('E')
+  expect(degreesToDM(172.5, false)).toBe('172 30.000 E')
+  expect(degreesToDMS(172.5, false)).toBe('172 30 0.0 E')
   expect(DMToDegrees('172 30 E')).toBe(172.5)
   expect(DMSToDegrees('172 30 00 E')).toBe(172.5)
   expect(DMToDegrees('E 172 30')).toBe(172.5)
@@ -40,8 +40,8 @@ test('E Longitude', () => {
 })
 
 test('W Longitude', () => {
-  expect(degreesToDM(-172.5, false).slice(-1)).toBe('W')
-  expect(degreesToDMS(-172.5, false).slice(-1)).toBe('W')
+  expect(degreesToDM(-172.5, false)).toBe('172 30.000 W')
+  expect(degreesToDMS(-172.5, false)).toBe('172 30 0.0 W')
   expect(DMToDegrees('172 30 W')).toBe(-172.5)
   expect(DMSToDegrees('172 30 00 W')).toBe(-172.5)
   expect(DMToDegrees('W 172 30')).toBe(-172.5)
@@ -63,24 +63,26 @@ test('degreesToDMS minute boundaries', () => {
 })
 
 test('Latitude Range', () => {
+  // Use toBeCloseTo for any value derived from float division so a future
+  // refactor that reorders the arithmetic does not break tests on IEEE drift.
   expect(DMSToDegrees('000 00 00 E')).toBe(0)
-  expect(DMSToDegrees('000 59 00 E')).toBe(59 / 60)
-  expect(DMSToDegrees('000 00 59 E')).toBe(59 / 3600)
+  expect(DMSToDegrees('000 59 00 E')).toBeCloseTo(59 / 60, 10)
+  expect(DMSToDegrees('000 00 59 E')).toBeCloseTo(59 / 3600, 10)
   expect(DMSToDegrees('000 00 00 W')).toBe(-0)
-  expect(DMSToDegrees('000 59 00 W')).toBe(-59 / 60)
-  expect(DMSToDegrees('000 00 59 W')).toBe(-59 / 3600)
+  expect(DMSToDegrees('000 59 00 W')).toBeCloseTo(-59 / 60, 10)
+  expect(DMSToDegrees('000 00 59 W')).toBeCloseTo(-59 / 3600, 10)
   expect(DMSToDegrees('000 30 00 E')).toBe(0.5)
   expect(DMSToDegrees('000 30 00 W')).toBe(-0.5)
-  expect(DMSToDegrees('000 30 30 E')).toBe(0.5 + 30 / 3600)
-  expect(DMSToDegrees('000 30 30 W')).toBe(-1 * (0.5 + 30 / 3600))
+  expect(DMSToDegrees('000 30 30 E')).toBeCloseTo(0.5 + 30 / 3600, 10)
+  expect(DMSToDegrees('000 30 30 W')).toBeCloseTo(-(0.5 + 30 / 3600), 10)
   expect(DMSToDegrees('090 45 00 E')).toBe(90.75)
   expect(DMSToDegrees('090 45 00 W')).toBe(-90.75)
   expect(DMSToDegrees('180 00 00 E')).toBe(180)
   expect(DMSToDegrees('180 00 00 W')).toBe(-180)
   expect(DMSToDegrees('179 00 00 E')).toBe(179)
   expect(DMSToDegrees('179 00 00 W')).toBe(-179)
-  expect(DMSToDegrees('179 59 00 E')).toBe(179 + 59 / 60)
-  expect(DMSToDegrees('179 59 00 W')).toBe(-1 * (179 + 59 / 60))
-  expect(DMSToDegrees('179 59 59 E')).toBe(179 + 59 / 60 + 59 / 3600)
-  expect(DMSToDegrees('179 59 59 W')).toBe(-1 * (179 + 59 / 60 + 59 / 3600))
+  expect(DMSToDegrees('179 59 00 E')).toBeCloseTo(179 + 59 / 60, 10)
+  expect(DMSToDegrees('179 59 00 W')).toBeCloseTo(-(179 + 59 / 60), 10)
+  expect(DMSToDegrees('179 59 59 E')).toBeCloseTo(179 + 59 / 60 + 59 / 3600, 10)
+  expect(DMSToDegrees('179 59 59 W')).toBeCloseTo(-(179 + 59 / 60 + 59 / 3600), 10)
 })
