@@ -24,18 +24,18 @@ export function degreesToDM(degs: number, lat: boolean): string {
 }
 
 export function DMSToDegrees(DMS: string): number {
+  const dirMatches = DMS.match(/[NSEW]/g)
+  if (dirMatches && dirMatches.length > 1) {
+    throw new SyntaxError(`DMS string contains multiple direction letters: ${DMS}`)
+  }
   let negative = false
   let DMS_no_dir = DMS
-  if (DMS.includes('N')) {
-    DMS_no_dir = DMS.replace('N', '')
-  } else if (DMS.includes('S')) {
+  const dir = dirMatches?.[0]
+  if (dir === 'S' || dir === 'W') {
     negative = true
-    DMS_no_dir = DMS.replace('S', '')
-  } else if (DMS.includes('E')) {
-    DMS_no_dir = DMS.replace('E', '')
-  } else if (DMS.includes('W')) {
-    negative = true
-    DMS_no_dir = DMS.replace('W', '')
+  }
+  if (dir) {
+    DMS_no_dir = DMS.replace(dir, '')
   }
   const parts = DMS_no_dir.split(' ')
   let fract = 1
