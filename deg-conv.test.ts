@@ -52,6 +52,24 @@ test('W Longitude', () => {
   expect(DMSToDegrees('W172 30 00')).toBe(-172.5)
 })
 
+test('formatters reject out-of-range values', () => {
+  expect(() => degreesToDM(91, true)).toThrow(RangeError)
+  expect(() => degreesToDM(-91, true)).toThrow(RangeError)
+  expect(() => degreesToDMS(91, true)).toThrow(RangeError)
+  expect(() => degreesToDMS(-91, true)).toThrow(RangeError)
+  expect(() => degreesToDM(181, false)).toThrow(RangeError)
+  expect(() => degreesToDM(-181, false)).toThrow(RangeError)
+  expect(() => degreesToDMS(181, false)).toThrow(RangeError)
+  expect(() => degreesToDMS(-181, false)).toThrow(RangeError)
+  expect(() => degreesToDM(NaN, true)).toThrow(RangeError)
+  expect(() => degreesToDM(Infinity, false)).toThrow(RangeError)
+  // Boundaries are inclusive.
+  expect(() => degreesToDM(90, true)).not.toThrow()
+  expect(() => degreesToDM(-90, true)).not.toThrow()
+  expect(() => degreesToDM(180, false)).not.toThrow()
+  expect(() => degreesToDM(-180, false)).not.toThrow()
+})
+
 test('degreesToDMS minute boundaries', () => {
   // Without Math.floor on minutes, 43.999 rounded to "43 60 -0.0 N" (invalid).
   expect(degreesToDMS(43.999, true)).toBe('43 59 56.4 N')

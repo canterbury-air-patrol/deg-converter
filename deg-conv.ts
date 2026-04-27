@@ -1,4 +1,15 @@
+function assertInRange(degs: number, lat: boolean): void {
+  if (!Number.isFinite(degs)) {
+    throw new RangeError('degrees must be a finite number')
+  }
+  const limit = lat ? 90 : 180
+  if (degs < -limit || degs > limit) {
+    throw new RangeError(`degrees ${degs} out of range for ${lat ? 'latitude (±90)' : 'longitude (±180)'}`)
+  }
+}
+
 export function degreesToDM(degs: number, lat: boolean): string {
+  assertInRange(degs, lat)
   let dir = ''
   if (degs < 0) {
     degs *= -1
@@ -49,6 +60,7 @@ export function DMToDegrees(DM: string): number {
 }
 
 export function degreesToDMS(degs: number, lat: boolean): string {
+  assertInRange(degs, lat)
   let dir = ''
   if (degs < 0) {
     degs *= -1
