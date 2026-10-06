@@ -30,7 +30,7 @@
   "homepage": "https://github.com/canterbury-air-patrol/deg-converter#readme",
   "devDependencies": {
     "@babel/preset-env": "^7.24.8",
-    "@babel/preset-typescript": "^7.26.0",
+    "@babel/preset-typescript": "^8.0.1",
     "@eslint/js": "^9.16.0",
     "@types/jest": "^30.0.0",
     "eslint": "^9.16.0",
