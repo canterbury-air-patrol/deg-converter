@@ -1,7 +1,7 @@
 import globals from "globals";
 import pluginJs from "@eslint/js";
 import tseslint from "typescript-eslint";
-import pluginReact from "eslint-plugin-react";
+import pluginReact from "@eslint-react/eslint-plugin";
 import pluginJest from "eslint-plugin-jest";
 
 export default [
@@ -9,6 +9,6 @@ export default [
   {languageOptions: { globals: globals.node }},
   pluginJs.configs.recommended,
   ...tseslint.configs.recommended,
-  pluginReact.configs.flat.recommended,
+  pluginReact.configs["recommended-typescript"],
   pluginJest.configs['flat/recommended'],
 ];
